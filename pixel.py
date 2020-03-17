@@ -6,6 +6,7 @@ from datetime import datetime
 
 import requests
 import telebot
+from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 from dotenv import load_dotenv
 from parsel import Selector
 
@@ -29,6 +30,7 @@ print(prod_name, price)
 bot = telebot.TeleBot(os.getenv("TOKEN"))
 
 today = datetime.now().strftime("%d.%m.%Y")
-url = f"[store link]({store_link})"
-msg = f"{today}\n\n{prod_name} - *{price}*\n\n{url}"
-bot.send_message(os.getenv("CHAT_ID"), msg, parse_mode="markdown")
+msg = f"{today}\n\n{prod_name} - *{price}*"
+kbd = InlineKeyboardMarkup()
+kbd.add(InlineKeyboardButton("open store", url=store_link))
+bot.send_message(os.getenv("CHAT_ID"), msg, parse_mode="markdown", reply_markup=kbd)
